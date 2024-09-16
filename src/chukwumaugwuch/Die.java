@@ -2,13 +2,17 @@
  * Course: CSC1020
  * Lab 2 - Exceptions
  * Die class
- * Name: FIXME
- * Last Updated: FIXME
+ * Name: Eddy Chukwuma-Ugwu
+ * Last Updated: 9/13/24
  */
 package chukwumaugwuch;
 
 import java.util.Random;
 
+/**
+ * Die objects are generated w/ a specific amount of sides.
+ * They can be rolled to give a random value.
+ */
 public class Die {
     /**
      * Fewest sides a user can generate.
@@ -18,9 +22,10 @@ public class Die {
      * Most sides a user can generate.
      */
     public static final int MAX_SIDES = 100;
+
     private int currentValue;
     private final int numSides;
-    private Random random;
+    private final Random random = new Random();
 
     /**
      * Constructor for die objects.
@@ -29,19 +34,30 @@ public class Die {
      */
     public Die(int numSides) {
         if (numSides < MIN_SIDES || numSides > MAX_SIDES) {
-            throw new IllegalArgumentException("Number of sides must be between " + MIN_SIDES + " and " + MAX_SIDES);
+            throw new IllegalArgumentException("Number of sides must be between " +
+                    MIN_SIDES + " and " + MAX_SIDES);
         }
         this.numSides = numSides;
     }
 
+    /**
+     * Returns current value.
+     * @return Current value.
+     * @throws DieNotRolledException if die isn't rerolled.
+     */
     public int getCurrentValue() {
-        return currentValue;
+        if (currentValue < 1 || currentValue > MAX_SIDES) {
+            throw new DieNotRolledException();
+        }
+        int value = currentValue;
+        currentValue = 0;
+        return value;
     }
 
     /**
      * Generates a new random value for the die.
      */
     public void roll() {
-        currentValue = random.nextInt(numSides) + MIN_SIDES;
+        currentValue = random.nextInt(numSides) + 1;
     }
 }
